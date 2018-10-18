@@ -30,6 +30,7 @@
     <section class="main" id="s1" >
 
         <div class="db-data" style="font-weight: bold ; font-size: large">
+            <!--Visualizar las preguntas!>
             <?php
             $link = mysqli_connect("localhost","root","","quizz");
             // Check connection

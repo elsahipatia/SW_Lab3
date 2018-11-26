@@ -32,23 +32,37 @@
 
         <div style="font-weight: bold ; font-size: large">
             <?php
-            $link = mysqli_connect("localhost","root","","quizz");
+            include "configDB.php";
 
-            $sql = "INSERT INTO preguntas(email, enunciado, correct, incorrect1, incorrect2, incorrect3, complejidad, tema) VALUES ('$_POST[email]','$_POST[question]','$_POST[correct]','$_POST[incorrect1]','$_POST[incorrect2]','$_POST[incorrect3]',$_POST[complexity],'$_POST[subject]')";
-            if (!mysqli_query($link ,$sql))
-            {
-                die('Error: '.mysqli_error($link));
+            if (!(isset($_POST['email'])&&isset($_POST['question'])&&isset($_POST['correct'])&&isset($_POST['incorrect1'])&&isset($_POST['incorrect2'])&& isset($_POST['incorrect3'])&&isset($_POST['complexity'])&&isset($_POST['subject']))){echo 'Error: Fallo en el servidor, pruebe mas tarde.'; return;}
+            $link = mysqli_connect($server,$user,$pass,$basededatos);
+            $email = trim($_POST['email']);
+            $enunciado = trim($_POST['question']);
+            $correct = trim($_POST['correct']);
+            $incorrect1 = trim($_POST['incorrect1']);
+            $incorrect2 = trim($_POST['incorrect2']);
+            $incorrect3 = trim($_POST['incorrect3']);
+            $complejidad = trim($_POST['complexity']);
+            $tema = trim($_POST['subject']);
+            if($_FILES['examine']['tmp_name']!="")
+                $img = mysqli_real_escape_string($link,file_get_contents($_FILES['examine']['tmp_name']));
+            else
+                $img = mysqli_real_escape_string($link, file_get_contents("pregunta.png"));
+            $sql = "INSERT INTO preguntas(email, enunciado, correct, incorrect1, incorrect2, incorrect3, complejidad, tema, foto) VALUES ('$email','$enunciado','$correct','$incorrect1','$incorrect2','$incorrect3',$complejidad,'$tema', '$img')";
+            if (!mysqli_query($link, $sql)) {
+                die('Error: Fallo en el servidor, pruebe mas tarde.');
             }
             echo "Pregunta añadida correctamente.<br>";
             echo "Para visualizar las preguntas haz click " . "<a href='verPreguntas.php'>aquí</a>";
             mysqli_close($link);
+
             ?>
 
 
         </div>
     </section>
     <footer class='main' id='f1'>
-        <a href='https://github.com'>Link GITHUB</a>
+        <a href='https://github.com/elsahipatia/SW_Lab3'>Link GITHUB</a>
     </footer>
 </div>
 </body>

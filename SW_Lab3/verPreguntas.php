@@ -30,21 +30,22 @@
     <section class="main" id="s1" >
 
         <div class="db-data" style="font-weight: bold ; font-size: large">
-            <!--Visualizar las preguntas!>
             <?php
-            $link = mysqli_connect("localhost","root","","quizz");
+            include "configDB.php";
+            $link = mysqli_connect($server,$user,$pass,$basededatos);
             // Check connection
             if (mysqli_connect_errno())
             {
                 echo "Failed to connect to MySQL: " . mysqli_connect_error();
             }
 
-            $result = mysqli_query($link,"SELECT email,enunciado,correct FROM preguntas");
+            $result = mysqli_query($link,"SELECT email,enunciado,correct, foto FROM preguntas");
             echo "<table style='width:100%' border='1'>
             <tr>
             <th>Autor</th>
             <th>Enunciado</th>
             <th>Respuesta Correcta</th>
+            <th>Imagen</th>
             </tr>";
 
             while($row = mysqli_fetch_array($result))
@@ -54,6 +55,7 @@
                 echo "<td style='white-space: pre-line'>" . $row['email'] . "</td>";
                 echo "<td style='white-space: pre-line'>" . $row['enunciado'] . "</td>";
                 echo "<td style='white-space: pre-line'>" . $row['correct'] . "</td>";
+                echo '<td> <img height="250" width="150" src="data:image/*;base64,'.base64_encode($row['foto']).' "/>';
                 echo "</tr>";
             }
             echo "</table>";
@@ -63,7 +65,7 @@
         </div>
     </section>
     <footer class='main' id='f1'>
-        <a href='https://github.com'>Link GITHUB</a>
+        <a href='https://github.com/elsahipatia/SW_Lab3'>Link GITHUB</a>
     </footer>
 </div>
 </body>
